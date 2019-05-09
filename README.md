@@ -19,4 +19,5 @@ For theses steps, we will assume that the git directory has already been cloned 
 3. Add a mariadb user and give him editing permissions on the created database. Here is a nice tutorial: https://tableplus.io/blog/2018/09/mariadb-how-to-create-new-user-and-grant-privileges.html
 4. Add the db user auth infos in `/server_resources/classes/databaseManager.js` in the `dbPool` const. Put the password in `/server_resources/private/credentials.js`
 5. Configure the websocket url in `/client_resources/scripts/wsManager.js` in the `WEBSOCKET_URL` constant.
-6. To start the website you must start the two servers with `nodejs /server_resources/http_server/listener.js` and `nodejs /server_resources/websocket_server/listener.js`
+6. Configure the `/client_resources` directory path in `/server_resources/http_server/fs/filesmanager.js` in the `CLIENT_RESOURCES_PATH`
+7. To start the website you must start the two servers with `nodejs /server_resources/http_server/listener.js` and `nodejs /server_resources/websocket_server/listener.js`
