@@ -20,4 +20,4 @@ For theses steps, we will assume that the git directory has already been cloned 
 4. Add the db user auth infos in `/server_resources/classes/databaseManager.js` in the `dbPool` const. Put the password in `/server_resources/private/credentials.js`
 5. Configure the websocket url in `/client_resources/scripts/wsManager.js` in the `WEBSOCKET_URL` constant.
 6. Configure the `/client_resources` directory path in `/server_resources/http_server/fs/filesmanager.js` in the `CLIENT_RESOURCES_PATH`
-7. To start the website you must start the two servers with `nodejs /server_resources/http_server/listener.js` and `nodejs /server_resources/websocket_server/listener.js`
+7. To start the website you must start the two servers with `node /server_resources/http_server/listener.js` and `node /server_resources/websocket_server/listener.js`
