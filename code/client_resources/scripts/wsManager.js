@@ -1,6 +1,6 @@
 "use strict";
 function WebSocketManager(){
-	const WEBSOCKET_URL = "ws://nmaitre.internet-box.ch:8080";
+	const WEBSOCKET_URL = "ws://13.52.192.189:8080";
 	var _this = this;
 	this.connection;
 	var connectionToken = false;
@@ -8,7 +8,7 @@ function WebSocketManager(){
 	/*init*/
 	(function(){
 		_this.connection = new WebSocket(WEBSOCKET_URL);
-		console.log("websocket connection established");
+		console.log("websocket connection initiated");
 	})();
 	
 	//events

@@ -7,7 +7,6 @@ version: 04.04.2019
 */
 function ConnectionObject(connection={}, user={}){
 	var _this = this;
-	
 	this.connection = {}; //ws connection
 	this.user = {}; //user data
 	
