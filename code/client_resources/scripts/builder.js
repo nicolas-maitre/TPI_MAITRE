@@ -111,15 +111,19 @@ function Builder(){
 		//build a user selector instead of a  login form for test purposes
 		var buttonUser1 = form.addElement('button', 'loginTempUserButton');
 		var buttonUser2 = form.addElement('button', 'loginTempUserButton');
+		var buttonUser3 = form.addElement('button', 'loginTempUserButton');
+		var buttonUser4 = form.addElement('button', 'loginTempUserButton');
 		
 		//properties
 		buttonUser1.innerText = "nmaitre";
 		buttonUser2.innerText = "nglassey";
+		buttonUser3.innerText = "ggruaz";
+		buttonUser4.innerText = "jlagona";
 		
 		//hardcoded user login events
 		buttonUser1.addEventListener('click', function(){
 			userObject = {
-				id: "bb686737-5080-11e9-809c-b827eb4f1633",
+				id: "0000-0000-0000-0000-0000",
 				token: "1234-1234-1234-1234-1234"
 			};
 			wsManager = new WebSocketManager();
@@ -128,8 +132,26 @@ function Builder(){
 		
 		buttonUser2.addEventListener('click', function(){
 			userObject = {
-				id: "f319ca59-5080-11e9-809c-b827eb4f1633",
+				id: "1111-1111-1111-1111-1111",
 				token: "2345-2345-2345-2345-2345"
+			};
+			wsManager = new WebSocketManager();
+			pagesManager.changePage('mwa');
+		});
+		
+		buttonUser3.addEventListener('click', function(){
+			userObject = {
+				id: "2222-2222-2222-2222-2222",
+				token: "3456-3456-3456-3456-3456"
+			};
+			wsManager = new WebSocketManager();
+			pagesManager.changePage('mwa');
+		});
+		
+		buttonUser4.addEventListener('click', function(){
+			userObject = {
+				id: "3333-3333-3333-3333-3333",
+				token: "4567-4567-4567-4567-4567"
 			};
 			wsManager = new WebSocketManager();
 			pagesManager.changePage('mwa');
