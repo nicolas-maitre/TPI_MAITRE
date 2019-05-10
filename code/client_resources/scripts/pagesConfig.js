@@ -7,7 +7,8 @@ version: 03.04.2019
 */
 var pagesConfig = {
 	mwa:{
-		title: "Messaging Web App"
+		title: "Messaging Web App",
+		requireLogin: true
 	},
 	login:{
 		title: "LogIn"
