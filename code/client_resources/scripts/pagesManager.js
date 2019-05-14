@@ -18,6 +18,7 @@ function PagesManager(){
 			return false;
 		}
 		if(!pagesConfig[pageName]){//non existant page (in structure)
+			_this.changePage("error");
 			console.log("this page doesn't exist");
 			return false;
 		}		
