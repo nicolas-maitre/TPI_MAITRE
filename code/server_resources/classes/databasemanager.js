@@ -23,7 +23,7 @@ function DatabaseManager(){
 		/*options
 			directFields = {};
 		*/
-		var textRequest = "INSERT INTO " + tableName + " SET ";
+		var textRequest = "INSERT INTO `" + tableName + "` SET ";
 		var dataRequest = [];
 		var directFields = {};
 		if(typeof options != "undefined" && options.directFields){
@@ -32,7 +32,7 @@ function DatabaseManager(){
 		
 		//builds fields in request
 		for(var indField in object){
-			textRequest += indField + " = ";
+			textRequest += "`" + indField + "` = ";
 			
 			if(directFields[indField]){ //fields that shouldn't be sql protected
 				textRequest += object[indField];
@@ -62,7 +62,7 @@ function DatabaseManager(){
 		//builds request
 		var textRequest = "SELECT ";
 		textRequest += (params.fields ? params.fields + ", active" : "*");
-		textRequest += " FROM " + params.tableName;
+		textRequest += " FROM `" + params.tableName + "`";
 		if(params.where){
 			textRequest += " WHERE " + params.where;
 		}

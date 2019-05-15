@@ -20,8 +20,8 @@ function InstantMessagingManager(wsManager){
 		//store message
 		database.insertInto("messages", { //insert into db
 			id: "UUID()",
-			groups_id: messageData.groupId,
-			users_id: params.auth.id,
+			group: messageData.groupId,
+			owner: params.auth.id,
 			text: messageData.text,
 			creation_time: "CURRENT_TIMESTAMP()"
 		},{
@@ -59,9 +59,9 @@ function InstantMessagingManager(wsManager){
 		console.log("wsManager?", typeof wsManager);
 		//get group
 		database.select({
-			fields: "users_id",
+			fields: "`user`",
 			tableName: "user_groups",
-			where: "groups_id = ?",
+			where: "`group` = ?",
 			data: [messageParams.groupId]
 		}, function(error = false, result = false){
 			if(error){

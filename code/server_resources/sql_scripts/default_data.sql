@@ -6,7 +6,7 @@ INSERT INTO users		SET id='2222-2222-2222-2222-2222', pseudo='ggruaz', email='gg
 INSERT INTO users		SET id='3333-3333-3333-3333-3333', pseudo='jlagona', email='julien.lagona@gmail.com', first_name='Julien', last_name='Lagona', creation_time=CURRENT_TIMESTAMP(), active=1, enabled=1;
 
 -- friends
-INSERT INTO friends		SET user_0="bb686737-5080-11e9-809c-b827eb4f1633", user_1="f319ca59-5080-11e9-809c-b827eb4f1633", creation_time=CURRENT_TIMESTAMP(), active=1;
+INSERT INTO friends		SET user_0="0000-0000-0000-0000-0000", user_1="1111-1111-1111-1111-1111", creation_time=CURRENT_TIMESTAMP(), active=1;
 
 -- private
 INSERT INTO groups 		SET id="0000-1111-2222-3333-4444", creation_time=CURRENT_TIMESTAMP(), name="Nicolas Maitre, Nicolas Glassey", type="private", active=1;

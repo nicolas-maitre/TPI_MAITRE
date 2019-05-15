@@ -7,7 +7,7 @@ version: 03.04.2019
 */
 function MessagingActions(){
 	var _this = this;
-	this.currentGroup = "0000-0000-0000-0000-0000";
+	this.currentGroup = "5555-6666-7777-8888-9999";
 	this.groups = {}; //loaded groups list
 	
 	// display multiple messages
