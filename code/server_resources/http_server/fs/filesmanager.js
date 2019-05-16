@@ -7,6 +7,7 @@ version: 04.04.2019
 */
 const fs = require("fs");
 const querystring = require("querystring");
+const mime = require("mime");
 const CLIENT_RESOURCES_PATH = "/var/git/TPI_MAITRE/code/client_resources"; //web directory path
 
 function FilesManager(){
@@ -21,8 +22,13 @@ function FilesManager(){
 		getFileFromWebsitePath(path, callBack);
 	}
 	function getFileFromWebsitePath(path, callBack){ //gets file from path
-		fs.readFile(CLIENT_RESOURCES_PATH + path, function(error, data){
-			callBack(error, data);
+		var pathUrl = CLIENT_RESOURCES_PATH + path;
+		fs.readFile(pathUrl, function(error, data){
+			console.log("mime.getType", mime.getType(pathUrl));
+			callBack(error, {
+				mimeType: mime.getType(pathUrl),
+				data: data
+			});
 		});
 	}
 }

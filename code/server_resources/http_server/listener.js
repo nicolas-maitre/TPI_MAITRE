@@ -12,7 +12,7 @@ const api = require("./api/apiEndpoint");
 
 function startServer(){
 	//create listener
-	var server = http.createServer(onRequest);
+	var server = http.createServer(onRequestStart);
 	server.listen(80);
 	console.log("http server started");
 
@@ -21,13 +21,17 @@ function startServer(){
 		//parse url to get the request endpoint
 		var parsedUrl = url.parse(request.url);
 		var pathArray = parsedUrl.pathname.split("/");
-		var endpoint = pathArray[1];
+		pathArray.shift();
+		parsedUrl.pathArray = pathArray;
+		var endpoint = pathArray[0];
 		switch(endpoint){
 			case 'api': //api
-				api.onRequest(parsedUrl);
+				api.onRequest(request, parsedUrl, function(error, data){
+					returnRequest(result, error, data);
+				});
 			break;
-			case 'imagesApi': //images api
-				console.log("images api call");
+			case 'filesApi': //images api
+				console.log("files api call");
 			break;
 			default: //file manager path
 				filesmanager.onRequest(parsedUrl, function(error, data){
@@ -36,24 +40,49 @@ function startServer(){
 			break;
 		}
 	}
+	
+	function onRequestStart(req, res){
+		//method based on this article https://itnext.io/how-to-handle-the-post-request-body-in-node-js-without-using-a-framework-cd2038b93190
+		if (req.method === 'POST'){
+			req.body = '';
+			req.on('data', function(chunk){
+				req.body += chunk.toString(); //add buffer to existing body
+			});
+			req.on('end', function(evt){
+				onRequest(req, res);
+			});
+		} else {
+			//if GET, no body
+			onRequest(req, res);
+		}
+	}
 
 	//returns response to client
-	function returnRequest(reqres, error, data){
+	function returnRequest(res, error, params){
+		/*
+		data:{
+			mimeType: string
+			data: any
+		}
+		*/
 		if(error){
 			console.log("ERROR", error);
-			reqres.statusCode = 500;
+			res.statusCode = 500;
 			//displays error message
 			var endstring = "<h1>Erreur 500</h1><br/>";
 			if(error.clientMsg){
-				endstring += clientMsg;
+				endstring += error.clientMsg;
 			}else{
 				endstring += "internal server error";
 			}
-			reqres.end(endstring);
+			res.end(endstring);
 			return;
 		}
-		reqres.statusCode = 200;
-		reqres.end(data); //returns
+		if(params.mimeType){
+			res.setHeader("Content-Type", params.mimeType);
+		}
+		res.statusCode = 200;
+		res.end(params.data); //returns
 	}
 }
 
