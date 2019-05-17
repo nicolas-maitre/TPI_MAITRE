@@ -1,5 +1,5 @@
 "use strict";
-const validUrl = "http://192.168.1.110"; //"http://nmaitre.internet-box.ch" used for dev purposes, fixes an issue with dynDNS
+const validUrl = ""; //"http://nmaitre.internet-box.ch" used for dev purposes, fixes an issue with dynDNS
 /*
 project: Messaging Web App
 description: contains function used to interact with the api
@@ -7,77 +7,59 @@ author: Nicolas Maitre
 version: 03.04.2019
 */
 function ApiManager(){
-	/*init*/
-	(function(){})();
 	/*get*/
 	this.get = {};
-	this.get.groups = function(options, callBack){
-		//{start, count}
-	}
-	this.get.group = function(options, callBack){
+	this.get.group = function(reqParams, callBack){
 		//{groupId}
 		
 		//test hc
 		var testGroup = {
-			id: options.groupId,
-			name: "Nicolas Maitre, Nicolas Glassey",
+			id: reqParams.groupId,
+			name: "Le groupe CPNV",
 			type: "single",
 			image: "testFileId"
 		}
 		callBack(false, testGroup);
 	}
-	this.get.messages = function(options, callBack){
-		//{groupId, start, count}
-		callApi("get", "messages", {params:options}, function(error = false, result = false){
-			if(error){
-				callBack(error);
-				return;
-			}
-			callBack(false, result);
-		});
-	}
-	
-	//get user's infos, is currently hardcoded
-	this.get.user = function(options, callBack){ 
-		//{userId}
-		var HCUsers = { //Hardcoded users
-			'bb686737-5080-11e9-809c-b827eb4f1633': {
-				id: 'bb686737-5080-11e9-809c-b827eb4f1633',
-				first_name: 'Nicolas',
-				last_name: 'Maitre',
-				pseudo: 'nmaitre'
-			},
-			'f319ca59-5080-11e9-809c-b827eb4f1633': {
-				id: 'f319ca59-5080-11e9-809c-b827eb4f1633',
-				first_name: 'Nicolas',
-				last_name: 'Glassey',
-				pseudo: 'nglassey'
-			}
-		}
-		if(!HCUsers[options.userId]){
-			console.log("user doesn't exist");
-			callBack("user unknown");
-			return;
-		}
-		callBack(false, HCUsers[options.userId]);
-	}
-	/*set*/
-	this.set = {};
 	
 	/*method*/
-	this.callApi = function(action, item, options = {}, callBack = function(){}){
+	this.callApi = function(action, reqParams = {}, callBack){
+		/*reqParams{
+			params: object
+			options: object
+			body: any
+			use_cache: bool
+		}*/
 		//build url
-		var fetchUrl = validUrl + "/api";
-		fetchUrl += "/" + action;
-		fetchUrl += "/" + item;
-		if(options.params){ //build params
-			fetchUrl += "/?" + JSON.stringify(options);
+		var fetchUrl = validUrl + "/api/" + action + "/?";
+		if(reqParams.params){
+			fetchUrl += "params=" + encodeURIComponent(JSON.stringify(reqParams.params)) + "&";
 		}
-		//make request
-		fetch(fetchUrl).then(function(response){
-			console.log("fetch response", response);
-		});/*.then(function(){
-			
-		});*/
+		if(reqParams.options){
+			fetchUrl += "options=" + encodeURIComponent(JSON.stringify(reqParams.options));
+		}
+		
+		//set headers
+		var fetchHeaders = new Headers([
+			['Auth', JSON.stringify(userObject)]
+		]);
+		
+		//set params
+		var fetchParams = {
+			method: 'POST',
+            headers: fetchHeaders,
+			body: reqParams.body,
+			cache: (reqParams.use_cache ? "force-cache" : "no-store")	
+		}
+		
+		console.log("fetch cache", fetchParams.cache);
+		//execute request
+		fetch(fetchUrl, fetchParams).then(function(response){
+			return response.json();
+		}).then(function(data){
+			callBack(false, data);
+		}).catch(function(error){
+			callBack(error, false);
+		});
 	};
 }

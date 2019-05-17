@@ -26,7 +26,7 @@ function MessagingActions(){
 		//zone in which the messages are built
 		var container = _this.groups[_this.currentGroup].msgContainer;
 		
-		apiManager.get.user({userId: data.userId}, function(error = false, result){	//calls api (or cache) to determine messager(user) name
+		apiManager.callApi("getUser", {params:{userId: data.userId}, use_cache:true}, function(error = false, result){	//calls api (or cache) to determine messager(user) name
 			if(error){
 				console.log("user error", error);
 				return;

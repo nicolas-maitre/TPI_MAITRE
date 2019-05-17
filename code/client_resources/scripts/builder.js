@@ -60,29 +60,31 @@ function Builder(){
         var element = container.addElement("div", "MWARightPanel");
 		var nameSection = element.addElement("div", "MWANameSection");
         var msgSection = element.addElement("div", "MWAMessagesSection");
-        var writeSection = element.addElement("div", "MWAWriteSection");
+        var writeSection = element.addElement("form", "MWAWriteSection");
 		var nameLeftSection = nameSection.addElement("div", "MWANameLeftSection");
 		var nameRightSection = nameSection.addElement("div", "MWANameRightSection");
 		var nameImage = nameLeftSection.addElement("div", "MWANameSectionImage");
 		var nameName = nameLeftSection.addElement("div", "MWANameSectionName");
 		var namePseudo = nameLeftSection.addElement("div", "MWANameSectionPseudo");
 		var nameInfoButton = nameRightSection.addElement("button", "MWANameSectionInfoButton");
-        var input = writeSection.addElement("textarea", "MWAWriteSectionTextInput");
+        var input = writeSection.addElement("input", "MWAWriteSectionTextInput");
         var sendBtn = writeSection.addElement("button", "MWAWriteSectionSendButton");
         //propetries
 		var writeHeight = 30;
 		msgSection.style["height"] = "calc(100% - " + (writeHeight + 10) + "px - 51px)";
         input.style["height"] = "30px";
 		input.setAttribute("placeholder", "Ecrivez votre message");
+		input.setAttribute("type", "text");
 		nameInfoButton.innerText = "i";
 		sendBtn.innerText = ">";
 		//event
-		sendBtn.addEventListener("click", function(evt){
+		writeSection.addEventListener("submit", function(evt){
+			evt.preventDefault();
 			actions.sendInstantMessage(input);
 		});
 		
 		//test hardcoded
-		nameName.innerText = "Nicolas Glassey, Nicolas Maitre";
+		nameName.innerText = "Les anciens du CPNV";
 		nameImage.style.backgroundImage = "url(/images/demo/dropbox.png)";
 		
         //return
@@ -162,6 +164,18 @@ function Builder(){
 		}
 	}
 	
+	/*Error Page*/
+	this.buildERRORPage = function(params){
+		var errorContainer = params.container.addElement('div');
+		errorContainer.innerHTML = globals.currentPrettyError;
+		var link = params.container.addElement('a');
+		link.innerText = "Retour à la page de messagerie";
+		link.setAttribute('href', '#');
+		link.addEventListener('click', function(evt){
+			pagesManager.changePage("mwa");
+		});
+		return {};
+	}
 	/*CONTENT ADAPTERS*/ //used to build an element containeing dynamic data
 	this.buildMessageAdapter = function(container, data, options){
 		console.log("buildMessageAdapter", data);
@@ -187,6 +201,7 @@ function Builder(){
 		name.innerText = data.userObject.first_name + " " + data.userObject.last_name;
 		text.innerText = data.text;
 		var displayDate = new Date(data.timestamp);
-		time.innerText = displayDate.getHours() + "h" + displayDate.getMinutes();
+		var minutesStr = "00" + displayDate.getMinutes();
+		time.innerText = displayDate.getHours() + "h" + minutesStr.substring(minutesStr.length - 2);
 	}
 }

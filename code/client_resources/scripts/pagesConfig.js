@@ -8,9 +8,14 @@ version: 03.04.2019
 var pagesConfig = {
 	mwa:{
 		title: "Messaging Web App",
-		requireLogin: true
+		requireLogin: true,
+		bootAction: "onMWAPageBuilt"
 	},
 	login:{
 		title: "LogIn"
+	},
+	error:{
+		title: "Error",
+		rebuild:true
 	}
 }

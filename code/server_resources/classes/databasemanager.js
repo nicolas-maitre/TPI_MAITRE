@@ -57,12 +57,13 @@ function DatabaseManager(){
 			where (text),
 			data(array),
 			extraText (text)
+			rawFields (bool)
 		*/
 		var dataRequest = (params.data ? params.data : []);
 		//builds request
 		var textRequest = "SELECT ";
-		textRequest += (params.fields ? params.fields + ", active" : "*");
-		textRequest += " FROM `" + params.tableName + "`";
+		textRequest += (params.fields ? params.fields + (params.rawFields ? "":", active") : "*");
+		textRequest += " FROM " + params.tableName + "";
 		if(params.where){
 			textRequest += " WHERE " + params.where;
 		}

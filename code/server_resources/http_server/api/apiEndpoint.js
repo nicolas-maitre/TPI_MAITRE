@@ -15,7 +15,7 @@ function ApiEndpoint(){
 		//console.log("onRequest apis", urlObj);
 		//define action method
 		var action = urlObj.pathArray[1];
-		if(!_this.actions[action]){
+		if(!apiActions[action]){
 			requestCallBack({clientMsg:"invalid api action"});
 			return;
 		}
@@ -63,7 +63,7 @@ function ApiEndpoint(){
 		}
 		
 		//execute action
-		_this.actions[action](actionParams, function(error, data){
+		apiActions[action](actionParams, function(error, data){
 			if(error){
 				requestCallBack(error, false);
 				return;

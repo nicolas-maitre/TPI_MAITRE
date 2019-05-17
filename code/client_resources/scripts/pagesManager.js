@@ -18,6 +18,7 @@ function PagesManager(){
 			return false;
 		}
 		if(!pagesConfig[pageName]){//non existant page (in structure)
+			globals.currentPrettyError = "<h1>Erreur 404</h1><br/>La page demandée n'existe pas.";
 			_this.changePage("error");
 			console.log("this page doesn't exist");
 			return false;
@@ -33,21 +34,26 @@ function PagesManager(){
 			_this.pages[_this.currentPage].domElement.classList.add('none');
 		}
 		
-		//add new page to history
-		if(!options.isPopState && !NOSERVER_ENV){
-			history.pushState({pageName:pageName}, "Messaging Web App", "/" + pageName);
-		}
-		
 		//page title (document)
 		document.title = "Messaging Web App - " + pageName;
 		
 		_this.currentPage = pageName;
 		
 		//page already built
+		if(_this.pages[pageName] && currentPageStructure.rebuild){
+			_this.pages[pageName].domElement.remove();
+			delete _this.pages[pageName];
+		}
 		if(_this.pages[pageName]){
 			_this.pages[pageName].domElement.classList.remove('none'); //show page
 			return _this.pages[pageName];
 		}
+		
+		//add new page to history
+		if(!options.isPopState && !NOSERVER_ENV){
+			history.pushState({pageName:pageName}, "Messaging Web App", "/" + pageName);
+		}
+		
 		//build page
 		var pageContainer = elements.pagesContainer.addElement('div', 'pageContainer ' + pageName.toUpperCase() + 'PageContainer');  //creates page container
 		var pageContent = {};
@@ -55,10 +61,16 @@ function PagesManager(){
 			//calls the page building method formed by the page name
 			pageContent = builder["build" + pageName.toUpperCase() + "Page"]({container: pageContainer, structure: currentPageStructure});
 		}
+		
 		_this.pages[pageName] = {
 			domElement: pageContainer,
 			elements: pageContent
 		};
+		
+		if(currentPageStructure.bootAction && true){
+			//dev
+		}
+		
 		return _this.pages[pageName];
 	};
 	

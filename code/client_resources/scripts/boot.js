@@ -9,6 +9,7 @@ version: 03.04.2019
 var userObject = {id: "", token: ""};
 var elements = {};
 var groups = {};
+var globals = {currentPrettyError:""};
 
 //classes
 var builder = new Builder();
@@ -17,6 +18,7 @@ var wsManager = new WebSocketManager();
 var actions = new Actions();
 var messagingActions = new MessagingActions();
 var apiManager = new ApiManager();
+var actions = new Actions();
 
 //start by history
 var pageName = "login"; //default page
