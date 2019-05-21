@@ -9,7 +9,8 @@ var pagesConfig = {
 	mwa:{
 		title: "Messaging Web App",
 		requireLogin: true,
-		bootAction: "onMWAPageBuilt"
+		bootAction: "onMWAPageBuilt",
+		loadAction: false
 	},
 	login:{
 		title: "LogIn"

@@ -28,7 +28,7 @@ function Builder(){
 		var userImage = user.addElement('div', 'MWATopMenuUserImage');
 		//properties
 		title.innerText = "Messaging Web App";
-		userName.innerText = "nmaitre2000";
+		userName.innerText = "...";
 		userImage.style.backgroundImage = "url(images/demo/dropbox.png)";
         //return
 		return {
@@ -44,15 +44,18 @@ function Builder(){
         var bottom = element.addElement('div', 'MWALeftPanelBottomSection');
         var searchInput = topBar.addElement('input', 'MWALeftPanelSearchInput');
         var searchButton = topBar.addElement('button', 'MWALeftPanelSearchButton');
+		var groupsListContainer = bottom.addElement('div','MWALeftPanelGroupsListContainer');
 		var addButton = bottom.addElement('button', "MWALeftPanelAddButton");
 		//properties
 		addButton.innerText = "+";
+		searchInput.setAttribute("placeholder", "Recherche");
         //return
         return{
             domElement: element,
             searchInput: searchInput,
             searchButton: searchButton,
-			addButton: addButton
+			addButton: addButton,
+			groupsListContainer: groupsListContainer
         }
 	}
     function buildMWARightPanel(container){
@@ -69,7 +72,8 @@ function Builder(){
 		var nameInfoButton = nameRightSection.addElement("button", "MWANameSectionInfoButton");
         var input = writeSection.addElement("input", "MWAWriteSectionTextInput");
         var sendBtn = writeSection.addElement("button", "MWAWriteSectionSendButton");
-        //propetries
+		var noSelectedInfo = msgSection.addElement('div', "MWAMessagesSectionNoSelectedInfo");
+        //properties
 		var writeHeight = 30;
 		msgSection.style["height"] = "calc(100% - " + (writeHeight + 10) + "px - 51px)";
         input.style["height"] = "30px";
@@ -77,6 +81,7 @@ function Builder(){
 		input.setAttribute("type", "text");
 		nameInfoButton.innerText = "i";
 		sendBtn.innerText = ">";
+		noSelectedInfo.innerHTML = "Aucune discussion selectionnée<br/>Sélectionnez en une dans la liste.";
 		//event
 		writeSection.addEventListener("submit", function(evt){
 			evt.preventDefault();
@@ -84,7 +89,7 @@ function Builder(){
 		});
 		
 		//test hardcoded
-		nameName.innerText = "Les anciens du CPNV";
+		nameName.innerText = "";
 		nameImage.style.backgroundImage = "url(/images/demo/dropbox.png)";
 		
         //return
@@ -96,7 +101,8 @@ function Builder(){
 			nameImage: nameImage,
 			nameText: nameName,
 			namePseudo: namePseudo,
-			nameInfoButton: nameInfoButton
+			nameInfoButton: nameInfoButton,
+			noSelectInfo: noSelectedInfo
         }
     }
 	
@@ -126,7 +132,8 @@ function Builder(){
 		buttonUser1.addEventListener('click', function(){
 			userObject = {
 				id: "0000-0000-0000-0000-0000",
-				token: "1234-1234-1234-1234-1234"
+				token: "1234-1234-1234-1234-1234",
+				pseudo: "nmaitre"
 			};
 			wsManager = new WebSocketManager();
 			pagesManager.changePage('mwa');
@@ -135,7 +142,8 @@ function Builder(){
 		buttonUser2.addEventListener('click', function(){
 			userObject = {
 				id: "1111-1111-1111-1111-1111",
-				token: "2345-2345-2345-2345-2345"
+				token: "2345-2345-2345-2345-2345",
+				pseudo: "nglassey"
 			};
 			wsManager = new WebSocketManager();
 			pagesManager.changePage('mwa');
@@ -144,7 +152,8 @@ function Builder(){
 		buttonUser3.addEventListener('click', function(){
 			userObject = {
 				id: "2222-2222-2222-2222-2222",
-				token: "3456-3456-3456-3456-3456"
+				token: "3456-3456-3456-3456-3456",
+				pseudo: "ggruaz"
 			};
 			wsManager = new WebSocketManager();
 			pagesManager.changePage('mwa');
@@ -153,7 +162,8 @@ function Builder(){
 		buttonUser4.addEventListener('click', function(){
 			userObject = {
 				id: "3333-3333-3333-3333-3333",
-				token: "4567-4567-4567-4567-4567"
+				token: "4567-4567-4567-4567-4567",
+				pseudo: "jlagona"
 			};
 			wsManager = new WebSocketManager();
 			pagesManager.changePage('mwa');
@@ -177,13 +187,16 @@ function Builder(){
 		return {};
 	}
 	/*CONTENT ADAPTERS*/ //used to build an element containeing dynamic data
-	this.buildMessageAdapter = function(container, data, options){
+	this.buildMessageAdapter = function(container, data, options = {}){
 		console.log("buildMessageAdapter", data);
 		/*data{
 			userObject,
 			text,
 			imageId,
 			timestamp
+		}
+		options{
+			userApi
 		}
 		*/
 		var extraClass = "foreignMessage";
@@ -198,10 +211,43 @@ function Builder(){
 		var time = box.addElement('div', 'messageAdapterTime ' + extraClass);
 		
 		//data
-		name.innerText = data.userObject.first_name + " " + data.userObject.last_name;
 		text.innerText = data.text;
 		var displayDate = new Date(data.timestamp);
 		var minutesStr = "00" + displayDate.getMinutes();
 		time.innerText = displayDate.getHours() + "h" + minutesStr.substring(minutesStr.length - 2);
+		name.innerText = "...";
+		
+		//user (api call if specified)
+		if(typeof options == "object" && options.userApi){
+			apiManager.callApi("getUser", {params:{userId: data.userObject.id}, use_cache:true}, function(error = false, result){	//calls api (or cache) to determine messager(user) name
+				if(error){
+					console.log("get user error", error);
+					return;
+				}
+				//use api data
+				name.innerText = result.first_name + " " + result.last_name;
+			});
+		} else {
+			//use provided data
+			name.innerText = data.userObject.first_name + " " + data.userObject.last_name;
+		}
+	}
+	
+	this.buildGroupAdapter = function(container, data, options){
+		console.log("buildGroupAdapter", data);
+		
+		var box = container.addElement('div', 'groupAdapterContainer');
+		var image = box.addElement('div', 'groupAdapterImage');
+		var name = box.addElement('div', 'groupAdapterName');
+		var notifPin = box.addElement('div', 'groupAdapterNotifPin none');
+		
+		//data
+		image.style.backgroundImage = "url(images/demo/dropbox.png)";
+		name.innerText = data.name;
+		
+		//events
+		box.addEventListener("click", function(evt){
+			messagingActions.displayGroup(data);
+		});
 	}
 }

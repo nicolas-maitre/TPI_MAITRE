@@ -23,7 +23,8 @@ function ApiActions(){
 		database.select({
 			tableName: "messages",
 			where: "`group` = ?",
-			data: [actionParams.params.groupId]
+			extraText: "ORDER BY creation_time ASC",
+			data: [actionParams.params.groupId],
 		}, callBack);
 	};
 	this.getGroups = function(actionParams, callBack){

@@ -6,7 +6,7 @@ author: Nicolas Maitre
 version: 03.04.2019
 */
 
-var userObject = {id: "", token: ""};
+var userObject = {id: "", token: "", pseudo:""};
 var elements = {};
 var groups = {};
 var globals = {currentPrettyError:""};

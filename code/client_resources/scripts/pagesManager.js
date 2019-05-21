@@ -19,7 +19,7 @@ function PagesManager(){
 		}
 		if(!pagesConfig[pageName]){//non existant page (in structure)
 			globals.currentPrettyError = "<h1>Erreur 404</h1><br/>La page demandée n'existe pas.";
-			_this.changePage("error");
+			_this.changePage("error", {noPushState:true});
 			console.log("this page doesn't exist");
 			return false;
 		}		
@@ -50,7 +50,7 @@ function PagesManager(){
 		}
 		
 		//add new page to history
-		if(!options.isPopState && !NOSERVER_ENV){
+		if(!options.noPushState && !NOSERVER_ENV){
 			history.pushState({pageName:pageName}, "Messaging Web App", "/" + pageName);
 		}
 		
@@ -67,8 +67,11 @@ function PagesManager(){
 			elements: pageContent
 		};
 		
-		if(currentPageStructure.bootAction && true){
-			//dev
+		if(currentPageStructure.bootAction && actions[currentPageStructure.bootAction]){
+			actions[currentPageStructure.bootAction]({pageName:pageName});
+		}
+		if(currentPageStructure.loadAction && actions[currentPageStructure.loadAction]){
+			actions[currentPageStructure.loadAction]({pageName:pageName});
 		}
 		
 		return _this.pages[pageName];
