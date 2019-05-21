@@ -6,22 +6,7 @@ description: contains function used to interact with the api
 author: Nicolas Maitre
 version: 03.04.2019
 */
-function ApiManager(){
-	/*get*/
-	this.get = {};
-	this.get.group = function(reqParams, callBack){
-		//{groupId}
-		
-		//test hc
-		var testGroup = {
-			id: reqParams.groupId,
-			name: "Le groupe CPNV",
-			type: "single",
-			image: "testFileId"
-		}
-		callBack(false, testGroup);
-	}
-	
+function ApiManager(){	
 	/*method*/
 	this.callApi = function(action, reqParams = {}, callBack){
 		/*reqParams{
@@ -38,6 +23,8 @@ function ApiManager(){
 		if(reqParams.options){
 			fetchUrl += "options=" + encodeURIComponent(JSON.stringify(reqParams.options));
 		}
+		
+		console.log("fetch url", fetchUrl);
 		
 		//set headers
 		var fetchHeaders = new Headers([
