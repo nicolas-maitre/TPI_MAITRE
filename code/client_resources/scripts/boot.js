@@ -11,7 +11,7 @@ var elements = {};
 var groups = {};
 var globals = {currentPrettyError:""};
 
-//classes
+//classes (singletons)
 var builder = new Builder();
 var pagesManager = new PagesManager();
 var wsManager = new WebSocketManager();
@@ -19,6 +19,7 @@ var actions = new Actions();
 var messagingActions = new MessagingActions();
 var apiManager = new ApiManager();
 var actions = new Actions();
+var translator = new Translator();
 
 //start by history
 var pageName = "login"; //default page

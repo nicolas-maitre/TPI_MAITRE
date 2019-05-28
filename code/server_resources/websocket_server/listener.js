@@ -2,6 +2,8 @@
 const http = require('http');
 const websocket = require('websocket');
 const wsmanager = require('./ws/websocketmanager');
+//const WS_PORT = 8081;
+const WS_PORT = 8080;
 
 function startServer(){
 	//"http" listener
@@ -17,7 +19,7 @@ function startServer(){
 	});
 
 	//listen
-	httpServer.listen(8080, function(){
+	httpServer.listen(WS_PORT, function(){
 		console.log("server started");
 	});
 

@@ -9,11 +9,13 @@ const http = require('http');
 const url = require('url');
 const filesmanager = require("./fs/filesmanager");
 const api = require("./api/apiEndpoint");
+//const HTTP_PORT = 81;
+const HTTP_PORT = 80;
 
 function startServer(){
 	//create listener
 	var server = http.createServer(onRequestStart);
-	server.listen(80);
+	server.listen(HTTP_PORT);
 	console.log("http server started");
 
 	function onRequest(request, result){//request event

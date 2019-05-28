@@ -17,7 +17,7 @@ function Builder(){
 			leftPanel: leftPanel,
             rightPanel: rightPanel
 		}
-	}
+	};
 	function buildMWATopMenu(container){
 		var element = container.addElement('div', 'MWATopMenu');
 		var left = element.addElement('div', 'MWATopMenuLeftSection');
@@ -37,7 +37,7 @@ function Builder(){
 			userName: userName,
 			userImage: userImage
 		}
-	}
+	};
 	function buildMWAleftPanel(container){
 		var element = container.addElement('div', 'MWALeftPanel');
         var topBar = element.addElement('div', 'MWALeftPanelTopBar');
@@ -57,7 +57,7 @@ function Builder(){
 			addButton: addButton,
 			groupsListContainer: groupsListContainer
         }
-	}
+	};
     function buildMWARightPanel(container){
         //create
         var element = container.addElement("div", "MWARightPanel");
@@ -104,7 +104,7 @@ function Builder(){
 			nameInfoButton: nameInfoButton,
 			noSelectInfo: noSelectedInfo
         }
-    }
+    };
 	
 	/*Login Page*/
 	this.buildLOGINPage = function(params){
@@ -112,7 +112,7 @@ function Builder(){
 		return {
 			form: form
 		}
-	}
+	};
 	function buildLoginForm(container){
 		var formWindow = container.addElement('div', 'loginFormWindow');
 		var form = formWindow.addElement(/*'form'*/ 'div', 'loginForm');
@@ -172,7 +172,7 @@ function Builder(){
 		return{
 			domElement: formWindow
 		}
-	}
+	};
 	
 	/*Error Page*/
 	this.buildERRORPage = function(params){
@@ -185,7 +185,7 @@ function Builder(){
 			pagesManager.changePage("mwa");
 		});
 		return {};
-	}
+	};
 	/*CONTENT ADAPTERS*/ //used to build an element containeing dynamic data
 	this.buildMessageAdapter = function(container, data, options = {}){
 		console.log("buildMessageAdapter", data);
@@ -207,19 +207,32 @@ function Builder(){
 		var line = container.addElement('div', 'messageAdapterLine ' + extraClass);
 		var box = line.addElement('div', 'messageAdapterBox ' + extraClass);
 		var name = box.addElement('div', 'messageAdapterName');
-		var text = box.addElement('div', 'messageAdapterText');
+		var textContainer = box.addElement('div', 'messageAdapterText');
 		var time = box.addElement('div', 'messageAdapterTime ' + extraClass);
 		
 		//data
-		text.innerText = data.text;
+		textContainer.innerText = "";
 		var displayDate = new Date(data.timestamp);
 		var minutesStr = "00" + displayDate.getMinutes();
 		time.innerText = displayDate.getHours() + "h" + minutesStr.substring(minutesStr.length - 2);
 		name.innerText = "...";
 		
+		//text data
+		var parsedMsg = utility.parseTextWithRegex(data.text, URL_REGEX);
+		console.log("parsedMsg", parsedMsg);
+		for(var indText = 0; indText < parsedMsg.texts.length; indText++){
+			var textNode = document.createTextNode(parsedMsg.texts[indText]);
+			textContainer.appendChild(textNode);
+			if(typeof parsedMsg.matches[indText] !== "undefined"){
+				var linkElem = textContainer.addElement("a", "messageAdapterTextLink");
+				linkElem.setAttribute("href", parsedMsg.matches[indText]);
+				linkElem.innerText = parsedMsg.matches[indText];
+			}
+		}
+		
 		//user (api call if specified)
 		if(typeof options == "object" && options.userApi){
-			apiManager.callApi("getUser", {params:{userId: data.userObject.id}, use_cache:true}, function(error = false, result){	//calls api (or cache) to determine messager(user) name
+			apiManager.getUser(data.userObject.id, function(error = false, result){
 				if(error){
 					console.log("get user error", error);
 					return;
@@ -231,8 +244,8 @@ function Builder(){
 			//use provided data
 			name.innerText = data.userObject.first_name + " " + data.userObject.last_name;
 		}
-	}
-	
+	};
+
 	this.buildGroupAdapter = function(container, data, options){
 		console.log("buildGroupAdapter", data);
 		
@@ -249,5 +262,34 @@ function Builder(){
 		box.addEventListener("click", function(evt){
 			messagingActions.displayGroup(data);
 		});
+	};
+
+	this.buildDateSeparator = function(container, dateObject, groupId){
+		var dateYear = dateObject.getFullYear();
+		var dateMonth = dateObject.getMonth();
+		var dateDay = dateObject.getDate();
+		if(groupId){
+			var lastDate = (messagingActions.groups[groupId].separatorDate || new Date(0));
+			if((dateYear == lastDate.getFullYear()) 
+			&& (dateMonth == lastDate.getMonth())
+			&& (dateDay == lastDate.getDate())){
+				//already built
+				return false;
+			}
+			//set new date
+			messagingActions.groups[groupId].separatorDate = dateObject;
+		}
+		var line = container.addElement('div', 'dateSeparatorLine');
+		var box = line.addElement('div', 'dateSeparatorBox');
+		var dateString = dateDay + " " + translator.get("month" + dateMonth);
+		
+		if((new Date(Date.now())).getFullYear() != dateYear){
+			dateString += " " + dateYear;
+		}
+		box.innerText = dateString;
+		return {
+			domElement: box,
+			date: dateObject
+		};
 	}
 }

@@ -3,10 +3,6 @@
 -- Model: New Model    Version: 1.0
 -- MySQL Workbench Forward Engineering
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
 -- -----------------------------------------------------
 -- Schema messaging_web_app_db
 -- -----------------------------------------------------
@@ -37,9 +33,6 @@ CREATE TABLE IF NOT EXISTS `messaging_web_app_db`.`files` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_files_users1_idx` ON `messaging_web_app_db`.`files` (`owner` ASC) VISIBLE;
-
-
 -- -----------------------------------------------------
 -- Table `messaging_web_app_db`.`users`
 -- -----------------------------------------------------
@@ -60,12 +53,6 @@ CREATE TABLE IF NOT EXISTS `messaging_web_app_db`.`users` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_users_files1_idx` ON `messaging_web_app_db`.`users` (`image` ASC) VISIBLE;
-
-CREATE UNIQUE INDEX `email_UNIQUE` ON `messaging_web_app_db`.`users` (`email` ASC) VISIBLE;
-
-
 -- -----------------------------------------------------
 -- Table `messaging_web_app_db`.`groups`
 -- -----------------------------------------------------
@@ -89,11 +76,6 @@ CREATE TABLE IF NOT EXISTS `messaging_web_app_db`.`groups` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_groups_files1_idx` ON `messaging_web_app_db`.`groups` (`image` ASC) VISIBLE;
-
-CREATE INDEX `fk_groups_users1_idx` ON `messaging_web_app_db`.`groups` (`administrator` ASC) VISIBLE;
-
 
 -- -----------------------------------------------------
 -- Table `messaging_web_app_db`.`messages`
@@ -125,13 +107,6 @@ CREATE TABLE IF NOT EXISTS `messaging_web_app_db`.`messages` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_messages_groups_idx` ON `messaging_web_app_db`.`messages` (`group` ASC) VISIBLE;
-
-CREATE INDEX `fk_messages_users1_idx` ON `messaging_web_app_db`.`messages` (`owner` ASC) VISIBLE;
-
-CREATE INDEX `fk_messages_files1_idx` ON `messaging_web_app_db`.`messages` (`file` ASC) VISIBLE;
-
-
 -- -----------------------------------------------------
 -- Table `messaging_web_app_db`.`user_groups`
 -- -----------------------------------------------------
@@ -153,11 +128,6 @@ CREATE TABLE IF NOT EXISTS `messaging_web_app_db`.`user_groups` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_users_has_groups_groups1_idx` ON `messaging_web_app_db`.`user_groups` (`group` ASC) VISIBLE;
-
-CREATE INDEX `fk_users_has_groups_users1_idx` ON `messaging_web_app_db`.`user_groups` (`user` ASC) VISIBLE;
-
-
 -- -----------------------------------------------------
 -- Table `messaging_web_app_db`.`tokens`
 -- -----------------------------------------------------
@@ -175,10 +145,3 @@ CREATE TABLE IF NOT EXISTS `messaging_web_app_db`.`tokens` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_tokens_users1_idx` ON `messaging_web_app_db`.`tokens` (`user` ASC) VISIBLE;
-
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

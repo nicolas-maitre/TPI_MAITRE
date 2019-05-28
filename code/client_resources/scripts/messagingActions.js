@@ -20,9 +20,13 @@ function MessagingActions(){
 			return;
 		}
 		//zone in which the messages are built
-		var container = _this.groups[_this.currentGroup].msgContainer;
+		var container = _this.groups[data.groupId].msgContainer;
 		//builds the message element
 		data.userObject = {id: data.userId};
+
+		console.log(data);
+
+		builder.buildDateSeparator(container, new Date(data.timestamp), data.groupId);
 		var messageAdapter = builder.buildMessageAdapter(container, data,{userApi:true});
 		
 		if(data.groupId == _this.currentGroup){
@@ -94,6 +98,9 @@ function MessagingActions(){
 			var container =_this.groups[options.groupId].msgContainer;
 			for(var indMessage = 0; indMessage < data.length; indMessage++){
 				var currentData = data[indMessage];
+				//date separator
+				var messageDate = new Date(currentData.creation_time);
+				var separator = builder.buildDateSeparator(container, messageDate, options.groupId);
 				//builds the message element
 				var messageAdapter = builder.buildMessageAdapter(container, {
 					userObject: {id: currentData.owner},
