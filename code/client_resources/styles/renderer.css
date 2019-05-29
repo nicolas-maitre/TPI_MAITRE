@@ -76,12 +76,20 @@ input{
 }
 
 /*MWA Page*/
-.MWAPageContainer{
-	overflow: hidden;
+.MWAPageContainer {
+    overflow: hidden;
+    text-align: center;
+    width: 100%;
+}
+.MWAPageContainer > div {
+    text-align: left;
 }
 .MWAMainSection {
     width: 100%;
     height: calc(100vh - 40px);
+    max-width: 1400px;
+    display: inline-block;
+    border: 1px solid #666;
 }
 .MWALeftPanel, .MWARightPanel {
     height: 100%;
@@ -155,7 +163,8 @@ input{
     width: 50px;
     border-radius: 50%;
     border: 1px solid #ccc;
-    background-color: #ff2525;
+    /*background-color: #ff2525;*/
+	background-color: #f3f;
     font-size: 35px;
     line-height: 50px;
 }
