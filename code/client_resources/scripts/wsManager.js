@@ -1,21 +1,25 @@
 "use strict";
 function WebSocketManager(){
 	const WEBSOCKET_URL = "ws://13.52.192.189:8080";
+	//const WEBSOCKET_URL = "ws://localhost:8080";
 	//const WEBSOCKET_URL = "ws://localhost:8081";
 	var _this = this;
 	this.connection;
 	var connectionToken = false;
 	
 	/*init*/
-	(function(){
-		_this.connection = new WebSocket(WEBSOCKET_URL);
-		console.log("websocket connection initiated");
-	})();
+	this.connection = new WebSocket(WEBSOCKET_URL);
+	console.log("websocket connection initiated");
 	
 	//events
 	this.connection.onopen = function(evt){
 		console.log("websocket connection established");
-	}
+	};
+
+	this.connection.onclose = function(evt){
+		console.log("websocket connection lost");
+		infoBox("La connection au serveur a été interrompue. Essayez de recharger la page.", 30000);
+	};
 	
 	this.connection.onmessage = function(evt){
 		var data = evt.data;
@@ -51,7 +55,10 @@ function WebSocketManager(){
 	this.actionMethods.newMessage = function(params){
 		//tmp
 		messagingActions.displayNewMessage(params);
-	}
+	};
+	this.actionMethods.newGroup = function(params){
+		messagingActions.displayNewGroup(params);
+	};
 	
 	//methods
 	this.sendMessage = function(action, data, callBack = function(){}){
@@ -70,6 +77,6 @@ function WebSocketManager(){
 		_this.connection.send(JSON.stringify(object));
 		console.log("message sent", object);
 		
-		callBack({});
+		callBack(false);
 	};
 }
