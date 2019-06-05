@@ -125,7 +125,11 @@ function MessagingActions(){
 
 		//update UI
 		//display data
+<<<<<<< HEAD
 		mwaElements.rightPanel.nameImage.style.backgroundImage = "url(" + utility.getFileUrl(data.image) +")";
+=======
+		mwaElements.rightPanel.nameImage.style.backgroundImage = "url(" + utility.getFileUrl(data.file) +")";
+>>>>>>> 1db5f6b5f291b5597678bdd114577c76270bc046
 		mwaElements.rightPanel.nameText.innerText = data.name;
 
 		mwaElements.rightPanel.input.value = groupSaveData.text;

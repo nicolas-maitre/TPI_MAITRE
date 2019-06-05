@@ -61,8 +61,11 @@ utility.parseTextWithRegex = function(text, regex){
 };
 
 utility.imageUploadProcedure = function(callBack){
+<<<<<<< HEAD
 	console.log("image upload procedure initiated");
 
+=======
+>>>>>>> 1db5f6b5f291b5597678bdd114577c76270bc046
 	var imageFile = false;
 	var imageData = false;
 

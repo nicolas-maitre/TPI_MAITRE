@@ -520,6 +520,7 @@ function Builder(){
 		};
 	};
 	this.displayGroupCreationWindow = function(callBacks){
+<<<<<<< HEAD
 
 		var selectedInfos = {
 			pm: false,
@@ -531,6 +532,8 @@ function Builder(){
 			}
 		};
 
+=======
+>>>>>>> 1db5f6b5f291b5597678bdd114577c76270bc046
 		var window = _this.newWindow({
 			name: "groupCreation",
 			title: "Ajouter",
@@ -540,6 +543,7 @@ function Builder(){
 		//_BUILD_
 		//tabs
 		var tabsContainer = container.addElement("div", "groupCreationTabsContainer");
+<<<<<<< HEAD
 		var pmTab = tabsContainer.addElement("div", "groupCreationTab");
 		var groupTab = tabsContainer.addElement("div", "groupCreationTab selected");
 		pmTab.innerText = "Créer une discussion";
@@ -628,6 +632,21 @@ function Builder(){
 					});
 				})(currentUser);
 			}
+=======
+		var pmTab = tabsContainer.addElement("div", "groupCreationTab selected");
+		var groupTab = tabsContainer.addElement("div", "groupCreationTab");
+		pmTab.innerText = "Créer une discussion";
+		groupTab.innerText = "Créer un groupe";
+		//pmSection
+		var pmContainer = container.addElement("div", "groupCreationPMSection groupCreationSection");
+		//groupSection
+		var groupContainer = container.addElement("div", "groupCreationGroupSection groupCreationSection none");
+		//DATA
+		//users list
+		apiManager.callApi("getUsers", false, function(error, result){
+			console.log("getUsers result", error, result);
+			//build lists
+>>>>>>> 1db5f6b5f291b5597678bdd114577c76270bc046
 		});
 
 		//_EVENTS_
@@ -643,6 +662,7 @@ function Builder(){
 			groupContainer.classList.remove("none");
 			pmContainer.classList.add("none");
 		});
+<<<<<<< HEAD
 
 		groupImageButton.addEventListener("click", function(){
 			utility.imageUploadProcedure(function(error, result){
@@ -690,6 +710,8 @@ function Builder(){
 			window.close();
 		});
 
+=======
+>>>>>>> 1db5f6b5f291b5597678bdd114577c76270bc046
 		//_ACTIONS_
 		function onAbort(){
 
