@@ -125,9 +125,9 @@ function MessagingActions(){
 
 		//update UI
 		//display data
+		
 		mwaElements.rightPanel.nameImage.style.backgroundImage = "url(" + utility.getFileUrl(data.image) +")";
 		mwaElements.rightPanel.nameText.innerText = data.name;
-
 		mwaElements.rightPanel.input.value = groupSaveData.text;
 		if(groupSaveData.file){
 			mwaElements.rightPanel.fileImage.style.backgroundImage = "url(" + utility.getFileUrl(groupSaveData.file.id) + ")";

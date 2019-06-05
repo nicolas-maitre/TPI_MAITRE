@@ -62,7 +62,7 @@ utility.parseTextWithRegex = function(text, regex){
 
 utility.imageUploadProcedure = function(callBack){
 	console.log("image upload procedure initiated");
-
+	
 	var imageFile = false;
 	var imageData = false;
 

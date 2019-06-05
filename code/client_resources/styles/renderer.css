@@ -556,15 +556,17 @@ input, .input{
     overflow: auto;
 }
 .window {
-    display: none;
+	display: none;
     position: relative;
     border: 1px solid #666;
     margin-top: 100px;
     background-color: white;
 }
+
 .window:last-child { /*only display one window at a time*/
     display: inline-block;
 }
+
 .windowTopBar {
     width: 100%;
     height: 40px;
@@ -687,6 +689,7 @@ input, .input{
     border-top: 0;
     padding: 10px;
 }
+
 .groupCreationGroupImage {
 
     height: 200px;

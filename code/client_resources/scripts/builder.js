@@ -520,7 +520,6 @@ function Builder(){
 		};
 	};
 	this.displayGroupCreationWindow = function(callBacks){
-
 		var selectedInfos = {
 			pm: false,
 			group: {
@@ -540,8 +539,99 @@ function Builder(){
 		//_BUILD_
 		//tabs
 		var tabsContainer = container.addElement("div", "groupCreationTabsContainer");
+		
 		var pmTab = tabsContainer.addElement("div", "groupCreationTab");
 		var groupTab = tabsContainer.addElement("div", "groupCreationTab selected");
+		pmTab.innerText = "Créer une discussion";
+		groupTab.innerText = "Créer un groupe";
+
+		//pmSection
+		var pmContainer = container.addElement("div", "groupCreationPMSection groupCreationSection none");
+
+		//groupSection
+		var groupContainer = container.addElement("div", "groupCreationGroupSection groupCreationSection");
+
+		var groupInfos = groupContainer.addElement("div", "groupCreationGroupInfos");
+		var groupImage = groupInfos.addElement("div", "groupCreationGroupImage");
+		var groupNameContainer = groupInfos.addElement("div", "groupCreationGroupNameContainer");
+		var groupImageButton = groupImage.addElement("button", "groupCreationGroupImageButton");
+		var groupNameLabel = groupNameContainer.addElement("label", "groupCreationGroupNameLabel");
+		var groupNameInput = groupNameContainer.addElement("input", "groupCreationGroupNameInput");
+
+		var groupUsers = groupContainer.addElement("div", "groupCreationGroupUsers");
+		var groupUsersTextContainer = groupUsers.addElement("div", "groupCreationGroupUsersTextContainer");
+		var groupUsersTextTitle = groupUsersTextContainer.addElement("div", "groupCreationGroupUsersTextTitle");
+		var groupUsersTextList = groupUsersTextContainer.addElement("div", "groupCreationGroupUsersTextList");
+		var groupUsersSelector = groupUsers.addElement("div", "groupCreationGroupUsersSelector");
+		var groupUsersSearch = groupUsersSelector.addElement("input", "groupCreationGroupUsersSearch");
+		var groupUsersSelectorList = groupUsersSelector.addElement("div", "groupCreationGroupUsersSelectList");
+
+		var buttonsContainer = groupContainer.addElement("div", "groupCreationButtonsContainer");
+		var groupCreateButton = buttonsContainer.addElement("button", "groupCreationButton");
+
+		//properties
+		groupImageButton.innerText = "Ajouter une image";
+		groupNameLabel.setAttribute("for", "groupCreationGroupName");
+		groupNameLabel.innerText = "Nom du groupe";
+		groupNameInput.setAttribute("id", "groupCreationGroupName");
+		groupNameInput.setAttribute("type", "text");
+
+		groupUsersTextTitle.innerText = "Ajoutez des utilisateurs dans le groupe";
+		groupUsersSearch.setAttribute("type", "search");
+		groupUsersSearch.setAttribute("placholder", "Rechercher");
+
+		groupCreateButton.innerText = "Créer";
+
+		//DATA
+		//users list
+		apiManager.callApi("getUsers", false, function(error, result){
+			if(error){
+				console.log("getUsers error");
+				return;
+			}
+			for(var indUser = 0; indUser < result.length; indUser++){
+				var currentUser = result[indUser];
+				//test self user
+				if(userObject.id === currentUser.id){
+					selectedInfos.group.selfUser = currentUser;
+					continue;
+				}
+				//BUILD
+				var userAdapter = groupUsersSelectorList.addElement("div", "groupCreationUserAdapter groupCreationGroupUserAdapter");
+				var userAdapterImage = userAdapter.addElement("div", "groupCreationUserAdapterImage");
+				var userAdapterNameContainer = userAdapter.addElement("div", "groupCreationUserAdapterNameContainer");
+				var userAdapterName = userAdapterNameContainer.addElement("div", "groupCreationUserAdapterName");
+				var userAdapterPseudo = userAdapterNameContainer.addElement("div", "groupCreationUserAdapterPseudo");
+				var userAdapterAction = userAdapter.addElement("div", "groupCreationUserAdapterAction");
+				var userAdapterCheckBox = userAdapterAction.addElement("input", "groupCreationUserAdapterCheckBox");
+				//properties && data
+				userAdapterImage.style.backgroundImage = "url(" + utility.getFileUrl(currentUser.image) + ")";
+				userAdapterName.innerText = currentUser.first_name + " " + currentUser.last_name;
+				userAdapterPseudo.innerText = "@" + currentUser.pseudo;
+				userAdapterCheckBox.setAttribute("type", "checkbox");
+				selectedInfos.group.usersCache[currentUser.id] = currentUser;
+				//events
+				(function(user){
+					userAdapterCheckBox.addEventListener("change", function(evt){
+						if(evt.srcElement.checked && !selectedInfos.group.users.includes(user.id)){
+							selectedInfos.group.users.push(user.id);
+						} else if(!evt.srcElement.checked && selectedInfos.group.users.includes(user.id)){
+							selectedInfos.group.users.splice(selectedInfos.group.users.indexOf(user.id), 1);
+						}
+						//display selected list
+						var usersList = [];
+						for(var indSelected = 0; indSelected < selectedInfos.group.users.length; indSelected++){
+							var selectedUser = selectedInfos.group.usersCache[selectedInfos.group.users[indSelected]];
+							usersList.push(selectedUser.first_name + " " + selectedUser.last_name);
+						}
+						groupUsersTextList.innerText = usersList.join(", ");
+					});
+				})(currentUser);
+			}
+=======
+		var pmTab = tabsContainer.addElement("div", "groupCreationTab selected");
+		var groupTab = tabsContainer.addElement("div", "groupCreationTab");
+>>>>>>> e22cd9dcddfe45ecac31c7968cb051d679016b31
 		pmTab.innerText = "Créer une discussion";
 		groupTab.innerText = "Créer un groupe";
 
