@@ -24,4 +24,4 @@ For theses steps, we will assume that the git directory has already been cloned 
 8. To start the website you must start the two servers with `node /server_resources/app_start.js`.
 
 ## Notes
-- The app is also fully compatible with the Windows OS.
+- The app is also fully compatible with Microsoft Windows.
