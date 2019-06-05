@@ -75,6 +75,21 @@ function MessagingActions(){
 		});
 	}
 	
+	this.displayNewGroup = function(options){
+		console.log("displayNewGroup", options);
+		//build
+		if(!pagesManager.pages.mwa){
+			console.log("mwa not built");
+			return;
+		}
+		var container = pagesManager.pages.mwa.elements.leftPanel.groupsListContainer;
+		builder.buildGroupAdapter(container, options);
+		
+		//display
+		if(options.administrator == userObject.id){
+			_this.displayGroup(options);
+		}
+	}
 	//displays a group
 	this.displayGroup = function(data){
 		if(!pagesManager.pages["mwa"]){
@@ -110,7 +125,7 @@ function MessagingActions(){
 
 		//update UI
 		//display data
-		mwaElements.rightPanel.nameImage.style.backgroundImage = "url(" + utility.getFileUrl(data.file) +")";
+		mwaElements.rightPanel.nameImage.style.backgroundImage = "url(" + utility.getFileUrl(data.image) +")";
 		mwaElements.rightPanel.nameText.innerText = data.name;
 
 		mwaElements.rightPanel.input.value = groupSaveData.text;

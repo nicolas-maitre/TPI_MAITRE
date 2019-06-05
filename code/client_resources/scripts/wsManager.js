@@ -55,7 +55,10 @@ function WebSocketManager(){
 	this.actionMethods.newMessage = function(params){
 		//tmp
 		messagingActions.displayNewMessage(params);
-	}
+	};
+	this.actionMethods.newGroup = function(params){
+		messagingActions.displayNewGroup(params);
+	};
 	
 	//methods
 	this.sendMessage = function(action, data, callBack = function(){}){
@@ -74,6 +77,6 @@ function WebSocketManager(){
 		_this.connection.send(JSON.stringify(object));
 		console.log("message sent", object);
 		
-		callBack({});
+		callBack(false);
 	};
 }
