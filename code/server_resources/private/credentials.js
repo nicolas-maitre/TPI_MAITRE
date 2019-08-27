@@ -6,5 +6,5 @@ author: Nicolas Maitre
 version: 04.04.2019
 */
 module.exports = {
-	dbRootPass: "GTH402pqm"
+	dbRootPass: "DEHO179zjn"
 }

@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 USE messaging_web_app_db;
 -- DEFAULT DATA
 INSERT INTO users		SET id='0000-0000-0000-0000-0000', pseudo='nmaitre', email='nicolas.maitre@cpnv.ch', first_name='Nicolas', last_name='Maitre', creation_time=CURRENT_TIMESTAMP(), active=1, enabled=1;
